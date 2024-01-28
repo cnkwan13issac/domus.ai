@@ -138,9 +138,6 @@
 
     
     
-        
-
-
 # # url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=cruise&location={lat}%{lng}&radius={radius}&type=restaurant&key={api_key}"
 
 # else:
@@ -200,7 +197,7 @@ for coordinate in places_coordinates:
     distance = result_DistanceMatrixAPI["rows"][0]["elements"][0]["distance"]["text"]
     duration = result_DistanceMatrixAPI["rows"][0]["elements"][0]["duration"]["text"]
     
-    place_type = ', '.join(place['types'])
+    place_type = ', '.join(places['types'])
     
     print(f"{place_type} at {destination}: Distance: {distance}, Duration: {duration}")
 

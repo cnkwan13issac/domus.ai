@@ -17,10 +17,17 @@ from flask import Flask, redirect, render_template, session, url_for
 import pyperclip
 import json
 
+import firebase_admin
+from firebase_admin import firestore
+
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
    
+cred = firebase_admin.credentials.Certificate('firebase.json')
+firebase_app = firebase_admin.initialize_app(cred)
+
 app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY")
 
@@ -73,8 +80,23 @@ def callback():
     session["user"] = token
     pyperclip.copy(json.dumps(token))
     print("token copied")
-    # TODO: control redirect by whether the profile is new
-    return redirect(f"/profile")
+    
+    db = firestore.client()
+
+    # Choose the collection where you want to search for data
+    collection_ref = db.collection('users')
+
+    # Define the query conditions
+    query = collection_ref.where('email', '==', token["userinfo"]["email"])
+
+    # Execute the query and retrieve the matching documents
+    docs = query.get()
+
+    # Iterate over the matching documents
+    if len(docs)>0:
+        return redirect(f"/choice")
+    else:
+        return redirect(f"/profile")
 
 @app.route("/logout")
 def logout():

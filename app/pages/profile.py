@@ -3,6 +3,7 @@ import pyperclip
 import json
 
 from app.pages.choice import choice_md
+from firebase_admin import firestore
 
 def on_init(state):
     print("on init (profile)")
@@ -52,8 +53,6 @@ profile_md = Markdown("""
 <|{travellingMode}|selector|lov=Walking;Cycling;Public Transport;Driving|dropdown|>     
 
 |travellingMode>
-                                     
-|>
                       
 <numberOfBedroom|
 ## **Number of Rooms**{: .color-primary}
@@ -66,7 +65,7 @@ profile_md = Markdown("""
 <place|
 ## Tell us **where**{: .color-primary} you work/ study
 
-<|{place}|input|label=e.g. Grocery store, gym, Royal Holloway|class_name=fullwidth|>
+<|{place}|input|label=Work/ study place|class_name=fullwidth|>
 |place>
                                
 <br />
@@ -93,13 +92,21 @@ def create_account(state):
         "region": state.region,
         "travellingMode": state.travellingMode,
         "place": state.place,
-        "numberOfBedroom": state.numberOfBedroom
+        "numberOfBedroom": state.numberOfBedroom,
+        "choices": {},
         # "places": state.placesString,
     }
-    state.prevUser = userData
+    state.user = userData
     print(userData)
+
+    db = firestore.client()
+    collection = db.collection("users")
+    new_doc = collection.document()
+    new_doc.set(userData)
+
     navigate(state,to="choice")
-    #TODO: save this to DB
+    
+    
 
 def on_navigate(state, page_name):
     # if page_name == "results" and not state.results_ready:
