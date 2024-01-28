@@ -1,0 +1,41 @@
+.bigbtn{
+    font-size: 40px;
+    width: 70px;
+    height: 70px;
+    text-align: center;
+}
+
+.top_layout{
+    justify-content: space-between;
+}
+.buttons_layout{
+    text-align: center;
+}
+.big_font{
+    font-size: 30px;
+    font-weight: bold;
+}
+.text-center{
+    text-align: center;
+}
+
+
+#home_container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    height: 500px;
+}
+
+#home_logo{
+    width: 800px;
+    max-width: 100%;
+    border-radius: 30px;
+}
+
+.short_label{
+    width: 100px;
+}
